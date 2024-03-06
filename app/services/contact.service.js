@@ -22,27 +22,15 @@ class ContactService {
         return contact;
     }
     
-    //Create
     async create(payload){
-        payload.favorite = true;
         const contact = this.extractContactData(payload);
         const result = await this.Contact.findOneAndUpdate(
             contact,
-            { $setOnInsert: contact},
+            { $set: { favorite: contact.favorite === true}},
             { returnDocument: "after", upsert: true}
         );
         return result.value;
     }
-
-    // async create(payload){
-    //     const contact = this.extractContactData(payload);
-    //     const result = await this.Contact.findOneAndUpdate(
-    //         contact,
-    //         { $set: { favorite: contact.favorite === true}},
-    //         { returnDocument: "after", upsert: true}
-    //     );
-    //     return result.value;
-    // }
 
     //FindAll
     async find(filter){
